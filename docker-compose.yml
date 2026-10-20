@@ -1,0 +1,18 @@
+services:
+  cr-assistant:
+    build: .
+    container_name: cr_ai_assistant
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      # Persist SQLite database, logs, and data across container updates
+      - ./data:/app/data
+      # Persist WhatsApp Baileys QR login session across container updates
+      - ./bridges/whatsapp/auth_info_baileys:/app/bridges/whatsapp/auth_info_baileys
+    environment:
+      - APP_HOST=0.0.0.0
+      - APP_PORT=8000
+      - WHATSAPP_BRIDGE_URL=http://localhost:3001

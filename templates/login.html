@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Login | CR's AI Assistant Control Center</title>
+
+  <!-- PWA & Mobile Web App Meta Tags -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0b1120">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="CR AI">
+  <link rel="apple-touch-icon" href="/static/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/static/icons/icon-192.png">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      background-color: #080d1a;
+      background-image: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(37, 99, 235, 0.18), transparent 70%);
+      color: #f8fafc;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.015em;
+    }
+    .glass-card {
+      background: linear-gradient(180deg, rgba(16, 24, 40, 0.82) 0%, rgba(11, 18, 33, 0.88) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), inset 0 1px 0 0 rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.35), inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+      box-shadow: 0 6px 20px 0 rgba(37, 99, 235, 0.45), inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
+    }
+    .btn-primary:active {
+      transform: scale(0.98);
+    }
+
+    /* Light Mode Styles */
+    html.light body {
+      background-color: #f1f5f9 !important;
+      background-image: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(59, 130, 246, 0.12), transparent 70%) !important;
+      color: #0f172a !important;
+    }
+    html.light .glass-card {
+      background: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.06), 0 8px 10px -6px rgba(0, 0, 0, 0.03) !important;
+    }
+    html.light .text-white:not(.btn-primary):not(.btn-primary *) {
+      color: #0f172a !important;
+    }
+    html.light .text-slate-300 {
+      color: #334155 !important;
+    }
+    html.light .text-slate-400,
+    html.light .text-slate-500 {
+      color: #64748b !important;
+    }
+    html.light .border-slate-800,
+    html.light .border-slate-700 {
+      border-color: #e2e8f0 !important;
+    }
+    html.light input#password {
+      background-color: #ffffff !important;
+      border-color: #cbd5e1 !important;
+      color: #0f172a !important;
+    }
+    html.light input#password:focus {
+      border-color: #3b82f6 !important;
+      box-shadow: 0 0 0 1px #3b82f6 !important;
+    }
+    html.light input#password::placeholder {
+      color: #94a3b8 !important;
+    }
+    html.light #theme-dropdown {
+      background-color: #ffffff !important;
+      border-color: #e2e8f0 !important;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important;
+    }
+    html.light #theme-dropdown button {
+      color: #334155 !important;
+    }
+    html.light #theme-dropdown button:hover {
+      background-color: #f1f5f9 !important;
+    }
+    html.light #btn-theme-toggle {
+      background-color: #ffffff !important;
+      border-color: #e2e8f0 !important;
+      color: #334155 !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+    }
+    html.light #btn-theme-toggle:hover {
+      background-color: #f8fafc !important;
+      color: #0f172a !important;
+    }
+  </style>
+  <script>
+    (function() {
+      try {
+        var stored = localStorage.getItem('theme') || 'system';
+        var isDark = true;
+        if (stored === 'dark') {
+          isDark = true;
+        } else if (stored === 'light') {
+          isDark = false;
+        } else {
+          isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        }
+        var root = document.documentElement;
+        if (isDark) {
+          root.classList.add('dark');
+          root.classList.remove('light');
+          root.setAttribute('data-theme', 'dark');
+        } else {
+          root.classList.add('light');
+          root.classList.remove('dark');
+          root.setAttribute('data-theme', 'light');
+        }
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+  <!-- Theme Toggle in Top Right Corner -->
+  <div class="fixed top-4 right-4 z-50">
+    <div class="relative" id="theme-selector-container">
+      <button onclick="toggleThemeDropdown()" id="btn-theme-toggle" class="px-3 py-1.5 text-xs rounded-xl font-medium transition flex items-center gap-1.5 bg-slate-800/80 hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-white shadow-sm" title="Change Theme (Dark, Light, Device)">
+        <span id="theme-btn-icon"><i class="fa-solid fa-moon text-blue-400"></i></span>
+        <span id="theme-btn-label" class="capitalize">Dark</span>
+        <i class="fa-solid fa-chevron-down text-[10px] opacity-60 ml-0.5"></i>
+      </button>
+
+      <div id="theme-dropdown" class="hidden absolute right-0 mt-2 w-36 rounded-2xl p-1.5 shadow-2xl z-50 border border-slate-700 bg-slate-900 text-xs space-y-1">
+        <button onclick="setTheme('light')" id="theme-opt-light" class="w-full flex items-center justify-between px-2.5 py-2 rounded-xl text-left transition hover:bg-slate-800 text-slate-300 hover:text-white">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-sun text-amber-400 w-4"></i>
+            <span>Light</span>
+          </div>
+          <i class="fa-solid fa-check text-blue-400 text-xs hidden theme-check-icon" id="check-light"></i>
+        </button>
+        <button onclick="setTheme('dark')" id="theme-opt-dark" class="w-full flex items-center justify-between px-2.5 py-2 rounded-xl text-left transition hover:bg-slate-800 text-slate-300 hover:text-white">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-moon text-blue-400 w-4"></i>
+            <span>Dark</span>
+          </div>
+          <i class="fa-solid fa-check text-blue-400 text-xs hidden theme-check-icon" id="check-dark"></i>
+        </button>
+        <button onclick="setTheme('system')" id="theme-opt-system" class="w-full flex items-center justify-between px-2.5 py-2 rounded-xl text-left transition hover:bg-slate-800 text-slate-300 hover:text-white">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-desktop text-emerald-400 w-4"></i>
+            <span>Device</span>
+          </div>
+          <i class="fa-solid fa-check text-blue-400 text-xs hidden theme-check-icon" id="check-system"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="glass-card max-w-md w-full rounded-3xl p-7 sm:p-8 space-y-6 border border-slate-800 shadow-2xl relative overflow-hidden">
+    <!-- Top subtle accent light -->
+    <div class="absolute -top-10 left-1/2 -translate-x-1/2 w-48 h-20 bg-blue-500/15 blur-2xl pointer-events-none rounded-full"></div>
+
+    <!-- Header -->
+    <div class="text-center space-y-2 relative">
+      <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-3xl shadow-xl shadow-blue-500/25 mb-3 border border-blue-400/20">
+        🎓
+      </div>
+      <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-white">CR's AI Assistant</h1>
+      <p class="text-xs text-slate-400">Autonomous Class Representative AI Control Center</p>
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[11px] font-medium mt-1">
+        <i class="fa-solid fa-shield-halved text-[10px]"></i> Secure CR Access
+      </div>
+    </div>
+
+    <!-- Error Alert Box -->
+    <div id="error-box" class="hidden p-3 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2">
+      <i class="fa-solid fa-triangle-exclamation text-rose-400 text-sm"></i>
+      <span id="error-msg">Incorrect password. Please try again.</span>
+    </div>
+
+    <!-- Login Form -->
+    <form onsubmit="handleLogin(event)" class="space-y-4">
+      <div>
+        <div class="flex items-center justify-between mb-1.5">
+          <label class="block text-xs font-semibold text-slate-300">Admin Master Password</label>
+          <span class="text-[10px] text-slate-500 font-mono">Press ↵ to enter</span>
+        </div>
+        <div class="relative">
+          <input type="password" id="password" required autofocus placeholder="Enter dashboard password..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition">
+          <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3.5 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-200 text-xs p-1" title="Toggle password visibility">
+            <i class="fa-solid fa-eye" id="eye-icon"></i>
+          </button>
+        </div>
+      </div>
+
+      <button type="submit" id="btn-submit" class="btn-primary w-full text-white font-semibold py-3 rounded-xl text-sm transition flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30 active:scale-95">
+        <span>Authenticate & Enter</span>
+        <i class="fa-solid fa-arrow-right text-xs"></i>
+      </button>
+    </form>
+
+    <!-- Footer Note -->
+    <div class="text-center pt-2 border-t border-slate-800 text-[11px] text-slate-500">
+      Authorized Access Only • Class Representative AI Control Center
+    </div>
+  </div>
+
+  <script>
+    function togglePasswordVisibility() {
+      const input = document.getElementById("password");
+      const icon = document.getElementById("eye-icon");
+      if (input.type === "password") {
+        input.type = "text";
+        icon.className = "fa-solid fa-eye-slash";
+      } else {
+        input.type = "password";
+        icon.className = "fa-solid fa-eye";
+      }
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const pwd = document.getElementById("password").value;
+      const btn = document.getElementById("btn-submit");
+      const errBox = document.getElementById("error-box");
+      const errMsg = document.getElementById("error-msg");
+
+      errBox.classList.add("hidden");
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Verifying...`;
+      btn.disabled = true;
+
+      try {
+        const res = await fetch("/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ password: pwd })
+        });
+        const data = await res.json();
+        if (data.status === "success") {
+          window.location.href = "/dashboard";
+        } else {
+          errMsg.innerText = data.detail || "Incorrect password. Please try again.";
+          errBox.classList.remove("hidden");
+        }
+      } catch (err) {
+        errMsg.innerText = "Network error. Please try again.";
+        errBox.classList.remove("hidden");
+      } finally {
+        btn.innerHTML = `<span>Access Control Dashboard</span> <i class="fa-solid fa-arrow-right text-xs"></i>`;
+        btn.disabled = false;
+      }
+    }
+
+    function getSavedTheme() {
+      try {
+        return localStorage.getItem('theme') || 'system';
+      } catch(e) {
+        return 'system';
+      }
+    }
+
+    function applyTheme(themeMode) {
+      const isDark = (themeMode === 'system')
+        ? (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        : (themeMode === 'dark');
+
+      const root = document.documentElement;
+      if (isDark) {
+        root.classList.add('dark');
+        root.classList.remove('light');
+        root.setAttribute('data-theme', 'dark');
+      } else {
+        root.classList.add('light');
+        root.classList.remove('dark');
+        root.setAttribute('data-theme', 'light');
+      }
+
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+      if (metaThemeColor) {
+        metaThemeColor.setAttribute('content', isDark ? '#0b1120' : '#ffffff');
+      }
+
+      updateThemeUI(themeMode);
+    }
+
+    function setTheme(mode) {
+      try {
+        localStorage.setItem('theme', mode);
+      } catch(e) {}
+      applyTheme(mode);
+      const dropdown = document.getElementById('theme-dropdown');
+      if (dropdown) dropdown.classList.add('hidden');
+    }
+
+    function toggleThemeDropdown() {
+      const dropdown = document.getElementById('theme-dropdown');
+      if (dropdown) dropdown.classList.toggle('hidden');
+    }
+
+    function updateThemeUI(selectedMode) {
+      const btnIcon = document.getElementById('theme-btn-icon');
+      const btnLabel = document.getElementById('theme-btn-label');
+      if (btnIcon) {
+        if (selectedMode === 'system') {
+          btnIcon.innerHTML = '<i class="fa-solid fa-desktop text-emerald-400"></i>';
+          if (btnLabel) btnLabel.innerText = 'Device';
+        } else if (selectedMode === 'light') {
+          btnIcon.innerHTML = '<i class="fa-solid fa-sun text-amber-400"></i>';
+          if (btnLabel) btnLabel.innerText = 'Light';
+        } else {
+          btnIcon.innerHTML = '<i class="fa-solid fa-moon text-blue-400"></i>';
+          if (btnLabel) btnLabel.innerText = 'Dark';
+        }
+      }
+
+      ['light', 'dark', 'system'].forEach(m => {
+        const check = document.getElementById('check-' + m);
+        if (check) {
+          if (m === selectedMode) check.classList.remove('hidden');
+          else check.classList.add('hidden');
+        }
+      });
+    }
+
+    if (window.matchMedia) {
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+        if (getSavedTheme() === 'system') {
+          applyTheme('system');
+        }
+      });
+    }
+
+    document.addEventListener('click', (e) => {
+      const container = document.getElementById('theme-selector-container');
+      const dropdown = document.getElementById('theme-dropdown');
+      if (dropdown && container && !container.contains(e.target)) {
+        dropdown.classList.add('hidden');
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      applyTheme(getSavedTheme());
+    });
+  </script>
+</body>
+</html>

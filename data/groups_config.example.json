@@ -1,0 +1,33 @@
+{
+  "groups": [
+    {
+      "id": "wa_main_notice",
+      "platform": "whatsapp",
+      "name": "Official Class Notice Group",
+      "category": "main_notice",
+      "subject_code": "All",
+      "identifier": "https://chat.whatsapp.com/YOUR_INVITE_CODE",
+      "invite_link": "https://chat.whatsapp.com/YOUR_INVITE_CODE",
+      "is_default_target": true,
+      "is_cr_source": false,
+      "is_active": true
+    },
+    {
+      "id": "msg_cr_group",
+      "platform": "messenger",
+      "name": "CR & Department Discussion Group",
+      "category": "cr_discussion",
+      "subject_code": "All",
+      "identifier": "YOUR_MESSENGER_THREAD_ID",
+      "invite_link": "https://www.facebook.com/messages/t/YOUR_MESSENGER_THREAD_ID",
+      "is_default_target": false,
+      "is_cr_source": true,
+      "is_active": true
+    }
+  ],
+  "bridge_config": {
+    "cr_source_group_id": "msg_cr_group",
+    "primary_notice_target_id": "wa_main_notice",
+    "auto_relay": true
+  }
+}

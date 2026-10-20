@@ -1,0 +1,70 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+
+# Node.js
+bridges/whatsapp/node_modules/
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Sensitive Credentials, Auth Sessions & Personal State (NEVER COMMIT TO GIT)
+.env
+*.env
+*.pem
+*.key
+studentportal.text
+
+# WhatsApp Baileys Auth Session & Caches
+bridges/whatsapp/auth_info_baileys/
+bridges/whatsapp/auth_info_baileys*/
+data/whatsapp_qr.png
+
+# Messenger & Playwright Browser Sessions
+bridges/messenger/session/
+data/messenger_session.json
+data/browser_profile/
+.cache/
+
+# Databases, SQLite, Logs & Caches
+data/*.db
+data/*.sqlite
+data/*.sqlite3
+data/*.csv
+data/exports/
+data/logs/
+*.log
+data/sheet_cache.json
+data/ai_quota_usage.json
+data/ai_config.json
+data/groups_config.json
+data/*.docx
+
+# Personal notice screenshots, docs and routines in knowledge base
+knowledge_base/*.png
+knowledge_base/*.jpeg
+knowledge_base/*.jpg
+knowledge_base/*.pdf
+knowledge_base/*.docx
+knowledge_base/*.meta.json
+knowledge_base/messenger_notice_*
+
+# Root screenshots / personal media (preserve static UI icons)
+*.png
+*.jpeg
+*.jpg
+!static/icons/*.png
+
+# OS & Temp
+.DS_Store
+Thumbs.db
+scratch/

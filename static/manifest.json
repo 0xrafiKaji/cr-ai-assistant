@@ -1,0 +1,46 @@
+{
+  "name": "CR's AI Assistant Control Center",
+  "short_name": "CR AI",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#0b1120",
+  "theme_color": "#0b1120",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/static/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/static/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/static/icons/icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Schedule Wizard",
+      "url": "/dashboard#tab-schedule-wizard",
+      "description": "Quick schedule notice generator"
+    },
+    {
+      "name": "Batch Attendance",
+      "url": "/dashboard#tab-attendance",
+      "description": "Live batch roster & attendance tracking"
+    },
+    {
+      "name": "AI Chat",
+      "url": "/dashboard#tab-chat",
+      "description": "Chat with CR Assistant Agent"
+    }
+  ]
+}
